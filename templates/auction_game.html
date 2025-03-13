@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Auction Game{% endblock %}
+
+{% block content %}
+<div class="game-container">
+    <div class="game-header">
+        <div class="current-player">Current Player: {{ game.players[game.current_player_index].name }}</div>
+        <div class="game-info">Round: {{ game.current_round }}</div>
+    </div>
+
+    <div class="game-main">
+        <div class="game-board">
+            <div class="auction-area">
+                <div class="deck-info">
+                    <h3>Remaining Cards</h3>
+                    <div class="card-stack">
+                        <div class="card-count">{{ game.animal_deck.size() }}</div>
+                    </div>
+                </div>
+
+                <div class="current-card">
+                    <h3>Current Card</h3>
+                    {% if game.current_card %}
+                    <div class="card">
+                        <img src="{{ url_for('static', filename=game.current_card.type.path_to_image()) }}" 
+                             alt="{{ game.current_card.type.value }}" 
+                             class="card-image">
+                        <div class="card-value">{{ game.current_card.type.cost() }}</div>
+                    </div>
+                    {% else %}
+                    <div class="card">
+                        <div class="no-card">No card drawn</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="player-area">
+            <h3>Your Money Cards</h3>
+            <div class="player-hand">
+                {% set money_counts = {} %}
+                {% for card in game.players[game.human_player_index].money %}
+                    {% if card.amount not in money_counts %}
+                        {% set _ = money_counts.update({card.amount: 0}) %}
+                    {% endif %}
+                    {% set _ = money_counts.update({card.amount: money_counts[card.amount] + 1}) %}
+                {% endfor %}
+                
+                {% for value, count in money_counts.items()|sort %}
+                <div class="money-card">
+                    <div class="card-value">{{ value }}</div>
+                    <div class="card-count">x{{ count }}</div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -12,7 +12,10 @@
         <header class="game-header">
             <h1>Kuhhandel Game Lobby</h1>
             <div class="game-info">
-                <span>Players: {{ game_state.players|length }}</span>
+                <span>Players: {{ game.players|length }}</span>
+                {% if game.current_round > 0 %}
+                    <span>Round: {{ game.current_round }}</span>
+                {% endif %}
             </div>
         </header>
 
@@ -23,7 +26,7 @@
                     <div class="players-list">
                         <h3>Current Players:</h3>
                         <ul>
-                            {% for player in game_state.players %}
+                            {% for player in game.players %}
                                 <li class="player-item {% if player.is_human %}human-player{% else %}computer-player{% endif %}">
                                     {{ player.name }}
                                     {% if player.is_human %}
@@ -36,21 +39,28 @@
                         </ul>
                     </div>
 
-                    <div class="add-player-section">
-                        <h3>Add Computer Player</h3>
-                        <form action="{{ url_for('add_computer_player') }}" method="POST" class="add-player-form">
-                            <input type="text" name="player_name" placeholder="Enter computer player name" required>
-                            <button type="submit" class="button">Add Computer Player</button>
-                        </form>
-                    </div>
+                    {% if game.current_round == 0 %}
+                        <div class="add-player-section">
+                            <h3>Add Computer Player</h3>
+                            <form action="{{ url_for('add_computer_player') }}" method="POST" class="add-player-form">
+                                <input type="text" name="player_name" placeholder="Enter computer player name" required>
+                                <button type="submit" class="button">Add Computer Player</button>
+                            </form>
+                        </div>
 
-                    <div class="start-game-section">
-                        <form action="{{ url_for('start_game_round') }}" method="POST">
-                            <button type="submit" class="button start-game-button" {% if game_state.players|length < 2 %}disabled{% endif %}>
-                                Start Game
-                            </button>
-                        </form>
-                    </div>
+                        <div class="start-game-section">
+                            <form action="{{ url_for('start_game_round') }}" method="POST">
+                                <button type="submit" class="button start-game-button" {% if game.players|length < 2 %}disabled{% endif %}>
+                                    Start Game
+                                </button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <div class="game-status">
+                            <h2>Game in Progress</h2>
+                            <p>Round {{ game.current_round }} - Current Player: {{ game.players[game.current_player_index].name }}</p>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </main>

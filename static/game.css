@@ -1,5 +1,5 @@
 .game-container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem;
 }
@@ -15,6 +15,12 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.current-player {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
 .game-info {
     display: flex;
     gap: 1rem;
@@ -24,16 +30,96 @@
 
 .game-main {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 1fr auto;
     gap: 2rem;
+    min-height: 600px;
 }
 
 .game-board {
     background: white;
     border-radius: 10px;
     padding: 2rem;
-    min-height: 500px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.auction-area {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    height: 100%;
+}
+
+.deck-info {
+    text-align: center;
+}
+
+.remaining-cards h3 {
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
+.card-stack {
+    width: 120px;
+    height: 180px;
+    background: #2ecc71;  /* Green background for animal cards */
+    border: 2px solid #27ae60;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card-count {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.current-card {
+    text-align: center;
+}
+
+.current-card h3 {
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    background: #2ecc71;  /* Green background for animal cards */
+    border: 2px solid #27ae60;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.card-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+}
+
+.card-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: white;
+    padding: 0.5rem;
+    text-align: center;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.no-card {
+    color: white;
+    font-style: italic;
 }
 
 .player-area {
@@ -43,28 +129,52 @@
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
+.player-area h3 {
+    color: #34495e;
+    margin-bottom: 1rem;
+}
+
 .player-hand {
     display: flex;
     gap: 1rem;
     flex-wrap: wrap;
-    margin-top: 1rem;
+    justify-content: center;
 }
 
-.game-status {
+.money-card {
+    width: 80px;
+    height: 120px;
+    background: #e74c3c;  /* Red background for money cards */
+    border: 2px solid #c0392b;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.money-card .card-value {
+    font-size: 1.5rem;
+    color: white;
     text-align: center;
-    padding: 2rem;
+    width: 100%;
+    background: none;
+    padding: 0;
 }
 
-.game-status h2 {
-    color: #2c3e50;
-    margin-bottom: 1rem;
+.money-card .card-count {
+    font-size: 1rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.3);
+    padding: 0.2rem 0.5rem;
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
 }
 
-.game-status p {
-    color: #7f8c8d;
-    font-size: 1.1rem;
-}
-
+/* Lobby styles */
 .lobby-content {
     max-width: 600px;
     margin: 0 auto;

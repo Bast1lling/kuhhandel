@@ -1,5 +1,6 @@
 from flask import Flask, render_template, redirect, url_for, session, request, flash
 from game.game_manager import GameManager
+import random
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-here'  # Required for session management
@@ -25,8 +26,24 @@ def game():
         return redirect(url_for('home'))
     
     game_id = session['game_id']
-    game_state = game_manager.get_game_state(game_id)
-    return render_template('game.html', game_state=game_state)
+    game = game_manager.get_game(game_id)
+    return render_template('game.html', game=game)
+
+@app.route('/auction-game')
+def auction_game():
+    if 'game_id' not in session:
+        return redirect(url_for('home'))
+    
+    game_id = session['game_id']
+    game = game_manager.get_game(game_id)
+    
+    if game.current_round == 0:
+        return redirect(url_for('game'))
+    
+    # Get the human player
+    human_player = next(player for player in game.players if player.is_human)
+    
+    return render_template('auction_game.html', game=game, human_player=human_player)
 
 @app.route('/add-computer-player', methods=['POST'])
 def add_computer_player():
@@ -40,8 +57,8 @@ def add_computer_player():
         flash('Please enter a player name', 'error')
         return redirect(url_for('game'))
     
-    game_state = game_manager.get_game_state(game_id)
-    if len(game_state['players']) >= app.config['MAX_PLAYERS']:
+    game = game_manager.get_game(game_id)
+    if len(game.players) >= app.config['MAX_PLAYERS']:
         flash('Maximum number of players reached', 'error')
         return redirect(url_for('game'))
     
@@ -58,18 +75,18 @@ def start_game_round():
         return redirect(url_for('home'))
     
     game_id = session['game_id']
-    game_state = game_manager.get_game_state(game_id)
+    game = game_manager.get_game(game_id)
     
-    if len(game_state['players']) < 2:
+    if len(game.players) < 2:
         flash('Need at least 2 players to start the game', 'error')
         return redirect(url_for('game'))
     
     # Update game state to start the game
-    game_state['state'] = 'in_progress'
-    game_state['current_round'] = 1
+    game.current_round = 1
+    game.current_player_index = random.randint(0, len(game.players) - 1)
     
     # TODO: Initialize game round (deal cards, etc.)
-    return redirect(url_for('game'))
+    return redirect(url_for('auction_game'))
 
 if __name__ == '__main__':
     app.run(debug=True) 
