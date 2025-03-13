@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuhhandel - Game Lobby</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='game.css') }}">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1>Kuhhandel Game Lobby</h1>
+            <div class="game-info">
+                <span>Players: {{ game_state.players|length }}</span>
+            </div>
+        </header>
+
+        <main class="game-main">
+            <div class="game-board">
+                <div class="lobby-content">
+                    <h2>Game Lobby</h2>
+                    <div class="players-list">
+                        <h3>Current Players:</h3>
+                        <ul>
+                            {% for player in game_state.players %}
+                                <li class="player-item {% if player.is_human %}human-player{% else %}computer-player{% endif %}">
+                                    {{ player.name }}
+                                    {% if player.is_human %}
+                                        <span class="player-type">(You)</span>
+                                    {% else %}
+                                        <span class="player-type">(Computer)</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="add-player-section">
+                        <h3>Add Computer Player</h3>
+                        <form action="{{ url_for('add_computer_player') }}" method="POST" class="add-player-form">
+                            <input type="text" name="player_name" placeholder="Enter computer player name" required>
+                            <button type="submit" class="button">Add Computer Player</button>
+                        </form>
+                    </div>
+
+                    <div class="start-game-section">
+                        <form action="{{ url_for('start_game_round') }}" method="POST">
+                            <button type="submit" class="button start-game-button" {% if game_state.players|length < 2 %}disabled{% endif %}>
+                                Start Game
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html> 

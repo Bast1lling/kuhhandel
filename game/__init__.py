@@ -1,0 +1,3 @@
+"""
+Kuhhandel game package.
+""" 
