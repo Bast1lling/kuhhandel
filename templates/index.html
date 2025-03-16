@@ -1,16 +1,101 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kuhhandel Game</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1>Welcome to Kuhhandel</h1>
-        <p>Get ready for an exciting trading game experience!</p>
-        <a href="/start-game" class="button">Start Game</a>
+{% extends "base.html" %}
+
+{% block title %}Welcome to Kuhhandel{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Welcome to Kuhhandel</h1>
+    <p>Get ready for an exciting trading game experience!</p>
+    
+    <div class="players-section">
+        <h2 id="playerCount">Players ({{ game.players|length }}/{{ config['MAX_PLAYERS'] }})</h2>
+        <div id="playersList" class="players-list">
+            {% for player in game.players %}
+            <div class="player-item {% if player.is_human %}human-player{% else %}computer-player{% endif %}">
+                <span class="player-name">{{ player.name }}</span>
+                <span class="player-type">{% if player.is_human %}Human{% else %}AI{% endif %}</span>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="add-player-section">
+            {% if game.players|length < config['MAX_PLAYERS'] %}
+            <button id="addComputerPlayer" class="button">
+                <span class="plus-icon">+</span> Add Computer Player
+            </button>
+            {% else %}
+            <button class="button" disabled style="opacity: 0.5; cursor: not-allowed;">
+                Maximum Players Reached
+            </button>
+            {% endif %}
+        </div>
     </div>
-</body>
-</html> 
+
+    <div class="start-game-section">
+        {% if game.players|length >= 3 %}
+        <a href="/start-game" class="button start-game-button">Start Game</a>
+        {% else %}
+        <button class="button start-game-button" disabled style="opacity: 0.5; cursor: not-allowed;">
+            Need at least 3 players
+        </button>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+(function() {
+    const maxPlayers = parseInt('{{ config["MAX_PLAYERS"] }}');
+    
+    document.getElementById('addComputerPlayer')?.addEventListener('click', function() {
+        fetch('/add-computer-player', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update the players list
+                    const playersList = document.getElementById('playersList');
+                    const playerElements = data.players.map(playerName => {
+                        const isHuman = playerName.startsWith('Human');
+                        return `
+                            <div class="player-item ${isHuman ? 'human-player' : 'computer-player'}">
+                                <span class="player-name">${playerName}</span>
+                                <span class="player-type">${isHuman ? 'Human' : 'AI'}</span>
+                            </div>
+                        `;
+                    });
+                    playersList.innerHTML = playerElements.join('');
+                    
+                    // Update the player count
+                    document.getElementById('playerCount').textContent = 
+                        `Players (${data.players.length}/${maxPlayers})`;
+                    
+                    // Update buttons based on player count
+                    if (data.players.length >= maxPlayers) {
+                        const addButton = document.getElementById('addComputerPlayer');
+                        if (addButton) {
+                            addButton.parentNode.innerHTML = `
+                                <button class="button" disabled style="opacity: 0.5; cursor: not-allowed;">
+                                    Maximum Players Reached
+                                </button>
+                            `;
+                        }
+                    }
+                    
+                    // Update start game button
+                    const startGameSection = document.querySelector('.start-game-section');
+                    if (data.players.length >= 3 && startGameSection) {
+                        startGameSection.innerHTML = `
+                            <a href="/start-game" class="button start-game-button">Start Game</a>
+                        `;
+                    }
+                } else {
+                    alert(data.error || 'Failed to add player');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add player. Please try again.');
+            });
+    });
+})();
+</script>
+{% endblock %} 

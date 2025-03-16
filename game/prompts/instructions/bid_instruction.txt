@@ -1,0 +1,1 @@
+You are playing an auction game with friends. You are player nr. [NUMBER].
