@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Auction Game{% endblock %}
+{% block title %}Kuhhandel Game{% endblock %}
 
 {% block content %}
 <div class="game-container">
@@ -11,6 +11,8 @@
 
     <div class="game-main">
         <div class="game-board">
+            {% if game.mode == 'auction' %}
+            <!-- Auction Area -->
             <div class="auction-area">
                 <div class="deck-info">
                     <h3>Remaining Cards</h3>
@@ -35,24 +37,28 @@
                     {% endif %}
                 </div>
             </div>
+            {% else %}
+            <!-- Horse Trading Area -->
+            <div class="trading-area">
+                <h3>Horse Trading</h3>
+                <div class="trading-box">
+                    Trading interface will be implemented here
+                </div>
+            </div>
+            {% endif %}
         </div>
 
+        <!-- Player's Money Cards (shown in both modes) -->
         <div class="player-area">
             <h3>Your Money Cards</h3>
             <div class="player-hand">
-                {% set money_counts = {} %}
-                {% for card in game.players[game.human_player_index].money %}
-                    {% if card.amount not in money_counts %}
-                        {% set _ = money_counts.update({card.amount: 0}) %}
+                {% for value, count in game.players[game.human_player_index].money.items()|sort %}
+                    {% if count > 0 %}
+                    <div class="money-card">
+                        <div class="card-value">{{ value }}</div>
+                        <div class="card-count">x{{ count }}</div>
+                    </div>
                     {% endif %}
-                    {% set _ = money_counts.update({card.amount: money_counts[card.amount] + 1}) %}
-                {% endfor %}
-                
-                {% for value, count in money_counts.items()|sort %}
-                <div class="money-card">
-                    <div class="card-value">{{ value }}</div>
-                    <div class="card-count">x{{ count }}</div>
-                </div>
                 {% endfor %}
             </div>
         </div>

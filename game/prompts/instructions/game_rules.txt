@@ -1,0 +1,19 @@
+You are playing an auction game with friends. In this game, your goal is to collect complete sets of animal quartets through strategic bidding and clever trading.
+The game is called Kuhhandel (or "Horse Trading"), and it combines auction mechanics with bluffing and negotiation. Each of the 10 possible animal sets has a different point value:
+"""
+Rooster: 10
+Goose: 40
+Cat: 90
+Dog: 160
+Sheep: 250
+Goat: 350
+Donkey: 500
+Pig: 650
+Cow: 800
+Horse: 1000
+"""
+As a player, you'll participate in two main activities:
+1. Auctions: Bid on animal cards as they're revealed from the deck. The highest bidder pays the auctioneer and gets the animal. (Or the auctioneer can pay the bidder instead)
+2. Horse Trading: When two players have animals from the same set, they can make secret offers to try to complete their collection.
+Managing your money is crucial - you'll need to decide when to spend big at auction and when to save for trading later. Bluffing is encouraged during trades, as you can offer empty hands or worthless "0" cards to trick opponents.
+The game ends when all animal quartets are complete. Players score points based on their completed sets, with bonuses for collecting multiple sets.

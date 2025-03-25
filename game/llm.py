@@ -1,4 +1,5 @@
 import os
+import json
 from dotenv import load_dotenv
 from openai import OpenAI
 from pydantic import BaseModel
@@ -19,7 +20,7 @@ def generate_structured_response(model: str, input: str, schema: BaseModel, inst
         instructions=instructions,
         text={"format": {"type": "json_schema", "name": "BidResponse", "schema": schema.model_json_schema()}}
     )
-    return response.output[0].content[0].text
+    return json.loads(response.output[0].content[0].text)   
 
 
 class Response(BaseModel):
@@ -27,4 +28,3 @@ class Response(BaseModel):
         extra = "forbid" # or "allow" or "ignore"
         allow_inf_nan = False
         # https://docs.pydantic.dev/1.10/usage/model_config/
-

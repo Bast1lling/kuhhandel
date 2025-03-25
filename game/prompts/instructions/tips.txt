@@ -1,0 +1,7 @@
+Your strategy should balance:
+- Which animal sets to pursue
+- When to outbid opponents at auction
+- How to negotiate favorable trades
+- When to bluff and when to make serious offers
+
+Remember that money has no value at the end - only completed animal sets score points. The player with the highest score wins!

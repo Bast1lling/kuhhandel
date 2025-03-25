@@ -30,7 +30,6 @@ class Animal(Enum):
         }[self]
     
     def path_to_image(self):
-        # return os.path.join("assets", "animals", f"{self.value.lower()}.jpg")
         return f"assets/animals/{self.value.lower()}.jpg"
 
 class AnimalCard:

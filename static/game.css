@@ -285,4 +285,19 @@
     background: #2980b9;
     transform: translateY(-2px);
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.trading-area {
+    padding: 2rem;
+    text-align: center;
+}
+
+.trading-box {
+    background: #f8f9fa;
+    border: 2px dashed #dee2e6;
+    border-radius: 10px;
+    padding: 3rem;
+    margin: 2rem;
+    color: #6c757d;
+    font-style: italic;
 } 

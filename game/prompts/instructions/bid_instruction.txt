@@ -1,1 +1,8 @@
-You are playing an auction game with friends. You are player nr. [NUMBER].
+Auction Alert: Player {name} is auctioning a {animal}!
+Current highest bid: {bid}
+
+What would you like to do?
+- To place a higher bid: Return a number greater than {bid}
+- To fold (withdraw from this auction): Return a number less or equal than {bid}
+
+Your decision:

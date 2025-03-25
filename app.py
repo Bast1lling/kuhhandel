@@ -58,7 +58,7 @@ def add_computer_player():
     })
 
 
-@app.route('/auction-game')
+@app.route('/game')
 def auction_game():
     if 'game_id' not in session:
         return redirect(url_for('home'))
@@ -69,7 +69,7 @@ def auction_game():
     # Get the human player
     human_player = next(player for player in game.players if player.is_human)
     
-    return render_template('auction_game.html', game=game, human_player=human_player)
+    return render_template('game.html', game=game, human_player=human_player)
 
 @app.route('/start-game-round', methods=['POST'])
 def start_game_round():
@@ -81,13 +81,13 @@ def start_game_round():
     
     if len(game.players) < 2:
         flash('Need at least 2 players to start the game', 'error')
-        return redirect(url_for('game'))
+        return redirect(url_for('home'))
     
     # Update game state to start the game
     game.current_round = 1
     game.current_player_index = random.randint(0, len(game.players) - 1)
     
-    return redirect(url_for('auction_game'))
+    return redirect(url_for('game'))
 
 if __name__ == '__main__':
     app.run(debug=True) 
